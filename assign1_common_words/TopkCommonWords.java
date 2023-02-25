@@ -10,16 +10,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.*;
-// import java.util.Scanner;
-// import java.util.Collections;
-// import java.util.LinkedHashMap;
-// import java.util.LinkedList;
-// import java.util.List;
-// import java.util.Map;
-// import java.util.TreeMap;
-// import java.util.Hashset;
-// import java.util.TreeSet;
+import static java.lang.Integer.parseInt;
+import static java.lang.String.parseString;
 
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -55,8 +49,8 @@ public class TopkCommonWords {
         FileOutputFormat.setOutputPath(job, new Path(args[3]));
 
         // Set k_value & path of stopwords.txt
-        k_value = Integer.ParseInt(args[4]);
-        stopwordsPath = String.ParseString(args[2]);
+        k_value = Integer.parseInt(args[4]);
+        stopwordsPath = String.parseString(args[2]);
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
         
@@ -69,7 +63,7 @@ public class TopkCommonWords {
         while (stopwordsScanner.hasNextLine()) {
             String currLine = stopwordsScanner.nextLine();
             String[] words = currLine.split(" ");
-            if (ArrayUtils.contains(words, word.toString())) {
+            if (Arrays.asList(words).contains(word)) {
                 return true;
             }
         }
@@ -114,7 +108,7 @@ public class TopkCommonWords {
 
         private int result;
         //private Map<String, Integer> WordFreq = new TreeMap<String, Integer>();
-        private Hashset<WordPair> WordFreq = new Hashset<WordPair>();
+        private HashSet<WordPair> WordFreq = new HashSet<WordPair>();
 
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
         throws IOException, InterruptedException {
@@ -141,10 +135,10 @@ public class TopkCommonWords {
         throws IOException, InterruptedException {
             // Sort the WordFreq in descending order
             TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
-            while (k > 0 && sortedPairs.isEmpty() == false) {
+            while (k_value > 0 && sortedPairs.isEmpty() == false) {
                 WordPair currPair = sortedPairs.pollLast();
                 context.write(new Text(currPair.word), new IntWritable(currPair.freq));
-                k--;
+                k_value--;
             }
 
         }
@@ -162,9 +156,9 @@ public class TopkCommonWords {
 
         @Override
         public int compareTo(WordPair wordpair) {
-            if (this.value > wordpair.value) {
+            if (this.freq > wordpair.freq) {
                 return -1;
-            } else if (this.value == wordpair.value) {
+            } else if (this.freq == wordpair.freq) {
                 return (0 - this.word.compareTo(wordpair.word));
             } else {
                 return 1;
