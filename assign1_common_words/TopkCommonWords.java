@@ -31,7 +31,7 @@ public class TopkCommonWords {
     public static int k_value;
     public static String stopwordsPath;
     
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception{
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "TopkCommonWords");
         job.setJarByClass(TopkCommonWords.class);
