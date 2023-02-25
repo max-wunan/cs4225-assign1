@@ -163,7 +163,7 @@ public class TopkCommonWords {
                 }
             }
 
-            context.write(new IntWritable(sum_f1), key);
+            //context.write(new IntWritable(sum_f1), key);
 
             // If the word is a common word in both files
             if (sum_f1 > 0 && sum_f2 > 0) {
