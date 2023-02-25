@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.*;
 import static java.lang.Integer.parseInt;
+import java.util.logging.Logger;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.conf.Configuration;
@@ -135,14 +136,15 @@ public class TopkCommonWords {
             while (itr.hasMoreTokens()) {
                 word.set(itr.nextToken());
                 // we only want words greater than 4
-                if (word.toString().length() > 4) {
-                    // check whether the word is stopword
-                    if (!isStopWord(word)) {
-                        context.write(word,two);
-                        //System.out.print(word);
-                        //System.out.println(file_id);
-                    }
-                }
+                // if (word.toString().length() > 4) {
+                //     // check whether the word is stopword
+                //     if (!isStopWord(word)) {
+                //         context.write(word,two);
+                //         //System.out.print(word);
+                //         //System.out.println(file_id);
+                //     }
+                // }
+                context.write(word,two);
             }
         }
     }
