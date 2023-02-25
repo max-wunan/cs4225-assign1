@@ -104,7 +104,7 @@ public class TopkCommonWords {
 
     
     public static class IntSumReducer
-    extends Reducer<Text, IntWritable, Text, IntWritable> {
+    extends Reducer<Text, IntWritable, IntWritable, Text> {
 
         private int result;
         //private Map<String, Integer> WordFreq = new TreeMap<String, Integer>();
@@ -137,7 +137,7 @@ public class TopkCommonWords {
             TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
             while (k_value > 0 && sortedPairs.isEmpty() == false) {
                 WordPair currPair = sortedPairs.pollLast();
-                context.write(new Text(currPair.word), new IntWritable(currPair.freq));
+                context.write(new IntWritable(currPair.freq), new Text(currPair.word));
                 k_value--;
             }
 
@@ -157,11 +157,11 @@ public class TopkCommonWords {
         @Override
         public int compareTo(WordPair wordpair) {
             if (this.freq > wordpair.freq) {
-                return -1;
+                return 1;
             } else if (this.freq == wordpair.freq) {
                 return (0 - this.word.compareTo(wordpair.word));
             } else {
-                return 1;
+                return -1;
             }
         }
     }
