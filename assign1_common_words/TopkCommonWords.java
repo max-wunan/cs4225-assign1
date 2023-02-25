@@ -134,6 +134,7 @@ public class TopkCommonWords {
 
         }
 
+        @Override
         protected void cleanup(Context context)
         throws IOException, InterruptedException {
             // Sort the WordFreq in descending order
