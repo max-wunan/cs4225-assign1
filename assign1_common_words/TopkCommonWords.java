@@ -47,8 +47,8 @@ public class TopkCommonWords {
 
         //FileInputFormat.addInputPath(job, new Path(args[0]));
         //FileInputFormat.addInputPath(job, new Path(args[1]));
-        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, TokenizerMapper1);
-        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, TokenizerMapper2);
+        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, TokenizerMapper1.class);
+        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, TokenizerMapper2.class);
         FileOutputFormat.setOutputPath(job, new Path(args[3]));
 
         // Set k_value & path of stopwords.txt
