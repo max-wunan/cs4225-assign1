@@ -24,7 +24,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 // import static org.apache.commons.lang3.ArrayUtils;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 
 public class TopkCommonWords {
 
@@ -37,15 +38,17 @@ public class TopkCommonWords {
         job.setJarByClass(TopkCommonWords.class);
 
         // Set mapper, combiner and reducer class
-        job.setMapperClass(TokenizerMapper.class);
+        //job.setMapperClass(TokenizerMapper.class);
         job.setCombinerClass(IntSumReducer.class);
         job.setReducerClass(IntSumReducer.class);
         
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        FileInputFormat.addInputPath(job, new Path(args[0]));
-        FileInputFormat.addInputPath(job, new Path(args[1]));
+        //FileInputFormat.addInputPath(job, new Path(args[0]));
+        //FileInputFormat.addInputPath(job, new Path(args[1]));
+        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, TokenizerMapper1);
+        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, TokenizerMapper2);
         FileOutputFormat.setOutputPath(job, new Path(args[3]));
 
         // Set k_value & path of stopwords.txt
@@ -71,23 +74,24 @@ public class TopkCommonWords {
     }
     
     // Mapper class
-    public static class TokenizerMapper
+    public static class TokenizerMapper1
     extends Mapper<Object, Text, Text, IntWritable> {
         private Text word = new Text();
+        private final static IntWritable one = new IntWritable(1);
 
         public void map(Object key, Text value, Context context) 
         throws IOException, InterruptedException {
             StringTokenizer itr = new StringTokenizer(value.toString());
 
             // Get the input file name to distinguish between input from 2 files
-            String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();
-            int file_id;
+            // String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();
+            // int file_id;
 
-            if (fileName == "task1-input.txt") {
-                file_id = 1;
-            } else {
-                file_id = 2;
-            }
+            // if (fileName == "task1-input.txt") {
+            //     file_id = 1;
+            // } else {
+            //     file_id = 2;
+            // }
             
             while (itr.hasMoreTokens()) {
                 word.set(itr.nextToken());
@@ -95,7 +99,42 @@ public class TopkCommonWords {
                 if (word.toString().length() > 4) {
                     // check whether the word is stopword
                     if (!isStopWord(word)) {
-                        context.write(word,new IntWritable(file_id));
+                        context.write(word,one);
+                        //System.out.print(word);
+                        //System.out.println(file_id);
+                    }
+                }
+            }
+        }
+    }
+
+    // Mapper class
+    public static class TokenizerMapper2
+    extends Mapper<Object, Text, Text, IntWritable> {
+        private Text word = new Text();
+        private final static IntWritable two = new IntWritable(2);
+
+        public void map(Object key, Text value, Context context) 
+        throws IOException, InterruptedException {
+            StringTokenizer itr = new StringTokenizer(value.toString());
+
+            // Get the input file name to distinguish between input from 2 files
+            // String fileName = ((FileSplit) context.getInputSplit()).getPath().getName();
+            // int file_id;
+
+            // if (fileName == "task1-input.txt") {
+            //     file_id = 1;
+            // } else {
+            //     file_id = 2;
+            // }
+            
+            while (itr.hasMoreTokens()) {
+                word.set(itr.nextToken());
+                // we only want words greater than 4
+                if (word.toString().length() > 4) {
+                    // check whether the word is stopword
+                    if (!isStopWord(word)) {
+                        context.write(word,two);
                         //System.out.print(word);
                         //System.out.println(file_id);
                     }
