@@ -66,7 +66,7 @@ public class TopkCommonWords {
         while (stopwordsScanner.hasNextLine()) {
             String currLine = stopwordsScanner.nextLine();
             String[] words = currLine.split(" ");
-            if (Arrays.asList(words).contains(word)) {
+            if (Arrays.asList(words).contains(word.toString())) {
                 return true;
             }
         }
@@ -157,9 +157,9 @@ public class TopkCommonWords {
 
             for (IntWritable fid : values) {
                 if (fid.get() == 1) {
-                    sum_f1++;
+                    sum_f1 += 1;
                 } else {
-                    sum_f2++;
+                    sum_f2 += 1;
                 }
             }
 
@@ -168,7 +168,7 @@ public class TopkCommonWords {
                 int result = Math.min(sum_f1, sum_f2);
                 //System.out.println(result);
                 WordFreq.add(new WordPair(key.toString(), result));
-                context.write(new IntWritable(result), key);
+                //context.write(new IntWritable(result), key);
             }
 
         }
@@ -189,7 +189,7 @@ public class TopkCommonWords {
                 System.out.print(currPair.freq);
                 System.out.println(currPair.word);
                 context.write(new IntWritable(currPair.freq), new Text(currPair.word));
-                k++;
+                k += 1;
             }
 
         }
