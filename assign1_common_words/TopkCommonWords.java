@@ -196,8 +196,8 @@ public class TopkCommonWords {
 
     // Creating a comparable class to sort the hashset storing (word, freq) pairs
     public static class WordPair implements Comparable<WordPair> {
-        String word;
-        int freq;
+        public String word;
+        public int freq;
 
         WordPair(String word, int freq) {
             this.word = word;
