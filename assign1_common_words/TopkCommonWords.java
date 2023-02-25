@@ -147,8 +147,7 @@ public class TopkCommonWords {
     public static class IntSumReducer
     extends Reducer<Text, IntWritable, IntWritable, Text> {
 
-        private int result;
-        //private Map<String, Integer> WordFreq = new TreeMap<String, Integer>();
+        //private int result;
         private TreeSet<WordPair> WordFreq = new TreeSet<WordPair>();
 
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
@@ -166,7 +165,7 @@ public class TopkCommonWords {
 
             // If the word is a common word in both files
             if (sum_f1 > 0 && sum_f2 > 0) {
-                result = Math.min(sum_f1, sum_f2);
+                int result = Math.min(sum_f1, sum_f2);
                 //System.out.println(result);
                 WordFreq.add(new WordPair(key.toString(), result));
             }
@@ -178,6 +177,7 @@ public class TopkCommonWords {
         throws IOException, InterruptedException {
             // Sort the WordFreq in descending order
             // TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
+            System.out.println("cleanup function for reducer is called.");
             int k = 0;
             
             while (!WordFreq.isEmpty()) {
