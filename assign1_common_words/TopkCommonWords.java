@@ -43,7 +43,7 @@ public class TopkCommonWords {
 
         // Set mapper, combiner and reducer class
         //job.setMapperClass(TokenizerMapper.class);
-        job.setCombinerClass(IntSumReducer.class);
+        //job.setCombinerClass(IntSumReducer.class);
         job.setReducerClass(IntSumReducer.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(IntWritable.class);
@@ -136,15 +136,14 @@ public class TopkCommonWords {
             while (itr.hasMoreTokens()) {
                 word.set(itr.nextToken());
                 // we only want words greater than 4
-                // if (word.toString().length() > 4) {
-                //     // check whether the word is stopword
-                //     if (!isStopWord(word)) {
-                //         context.write(word,two);
-                //         //System.out.print(word);
-                //         //System.out.println(file_id);
-                //     }
-                // }
-                context.write(word,two);
+                if (word.toString().length() > 4) {
+                    // check whether the word is stopword
+                    if (!isStopWord(word)) {
+                        context.write(word,two);
+                        //System.out.print(word);
+                        //System.out.println(file_id);
+                    }
+                }
             }
         }
     }
