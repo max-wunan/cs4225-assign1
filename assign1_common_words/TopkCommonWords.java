@@ -11,7 +11,6 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.*;
 import static java.lang.Integer.parseInt;
-import static java.lang.String.parseString;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.conf.Configuration;
@@ -23,7 +22,8 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import static org.apache.commons.lang3.ArrayUtils;
+// import static org.apache.commons.lang3.ArrayUtils;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 
 public class TopkCommonWords {
@@ -50,7 +50,7 @@ public class TopkCommonWords {
 
         // Set k_value & path of stopwords.txt
         k_value = Integer.parseInt(args[4]);
-        stopwordsPath = String.parseString(args[2]);
+        stopwordsPath = args[2];
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
         
