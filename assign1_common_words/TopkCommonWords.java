@@ -134,13 +134,12 @@ public class TopkCommonWords {
 
         }
 
-        public void cleanup(Context context)
+        protected void cleanup(Context context)
         throws IOException, InterruptedException {
             // Sort the WordFreq in descending order
             // TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
             int k = 0;
             
-
             while (!WordFreq.isEmpty()) {
                 if (k == k_value) {
                     break;
