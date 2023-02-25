@@ -37,6 +37,9 @@ public class TopkCommonWords {
         Job job = Job.getInstance(conf, "TopkCommonWords");
         job.setJarByClass(TopkCommonWords.class);
 
+        // Set input text separator
+        conf.set("mapreduce.input.keyvaluelinerecordreader.key.value.separator", " \t\n\r\f");
+
         // Set mapper, combiner and reducer class
         //job.setMapperClass(TokenizerMapper.class);
         job.setCombinerClass(IntSumReducer.class);
