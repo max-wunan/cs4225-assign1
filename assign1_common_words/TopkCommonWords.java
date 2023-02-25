@@ -41,9 +41,10 @@ public class TopkCommonWords {
         //job.setMapperClass(TokenizerMapper.class);
         job.setCombinerClass(IntSumReducer.class);
         job.setReducerClass(IntSumReducer.class);
-        
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputValueClass(IntWritable.class);
+        job.setOutputKeyClass(IntWritable.class);
+        job.setOutputValueClass(Text.class);
 
         //FileInputFormat.addInputPath(job, new Path(args[0]));
         //FileInputFormat.addInputPath(job, new Path(args[1]));
