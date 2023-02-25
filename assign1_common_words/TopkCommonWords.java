@@ -135,10 +135,15 @@ public class TopkCommonWords {
         throws IOException, InterruptedException {
             // Sort the WordFreq in descending order
             TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
-            while (k_value > 0 && sortedPairs.isEmpty() == false) {
+            int k = 0;
+
+            while (!sortedPairs.isEmpty()) {
+                if (k == k_value) {
+                    break;
+                }
                 WordPair currPair = sortedPairs.pollLast();
                 context.write(new IntWritable(currPair.freq), new Text(currPair.word));
-                k_value--;
+                k++;
             }
 
         }
