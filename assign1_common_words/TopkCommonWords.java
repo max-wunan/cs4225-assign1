@@ -168,6 +168,7 @@ public class TopkCommonWords {
                 int result = Math.min(sum_f1, sum_f2);
                 //System.out.println(result);
                 WordFreq.add(new WordPair(key.toString(), result));
+                context.write(new IntWritable(result), key);
             }
 
         }
