@@ -108,7 +108,7 @@ public class TopkCommonWords {
 
         private int result;
         //private Map<String, Integer> WordFreq = new TreeMap<String, Integer>();
-        private HashSet<WordPair> WordFreq = new HashSet<WordPair>();
+        private TreeSet<WordPair> WordFreq = new TreeSet<WordPair>();
 
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
         throws IOException, InterruptedException {
@@ -134,14 +134,15 @@ public class TopkCommonWords {
         public void cleanup(Context context)
         throws IOException, InterruptedException {
             // Sort the WordFreq in descending order
-            TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
+            // TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
             int k = 0;
+            System.out.println(sortedPairs);
 
-            while (!sortedPairs.isEmpty()) {
+            while (!WordFreq.isEmpty()) {
                 if (k == k_value) {
                     break;
                 }
-                WordPair currPair = sortedPairs.pollLast();
+                WordPair currPair = WordFreq.pollLast();
                 context.write(new IntWritable(currPair.freq), new Text(currPair.word));
                 k++;
             }
@@ -164,7 +165,7 @@ public class TopkCommonWords {
             if (this.freq > wordpair.freq) {
                 return 1;
             } else if (this.freq == wordpair.freq) {
-                return (0 - this.word.compareTo(wordpair.word));
+                return this.word.compareTo(wordpair.word);
             } else {
                 return -1;
             }
