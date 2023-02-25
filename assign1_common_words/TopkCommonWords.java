@@ -9,15 +9,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Hashset;
-import java.util.TreeSet;
+import java.util.*;
+// import java.util.Scanner;
+// import java.util.Collections;
+// import java.util.LinkedHashMap;
+// import java.util.LinkedList;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.TreeMap;
+// import java.util.Hashset;
+// import java.util.TreeSet;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -28,7 +29,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.commons.lang.ArrayUtils;
+import static org.apache.commons.lang3.ArrayUtils;
 
 
 public class TopkCommonWords {
@@ -54,15 +55,15 @@ public class TopkCommonWords {
         FileOutputFormat.setOutputPath(job, new Path(args[3]));
 
         // Set k_value & path of stopwords.txt
-        k_value = ParseInt(args[4]);
-        stopwordsPath = ParseString(args[2]);
+        k_value = Integer.ParseInt(args[4]);
+        stopwordsPath = String.ParseString(args[2]);
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
         
     }
 
     // Function to check whether word is stopword
-    public boolean isStopWord(Text word) throws IOException, FileNotFoundException {
+    public static boolean isStopWord(Text word) throws IOException, FileNotFoundException {
         File stopwords = new File(stopwordsPath);
         Scanner stopwordsScanner = new Scanner(stopwords);
         while (stopwordsScanner.hasNextLine()) {
