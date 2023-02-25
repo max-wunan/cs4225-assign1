@@ -96,8 +96,8 @@ public class TopkCommonWords {
                     // check whether the word is stopword
                     if (!isStopWord(word)) {
                         context.write(word,new IntWritable(file_id));
-                        System.out.print(word);
-                        System.out.println(file_id);
+                        //System.out.print(word);
+                        //System.out.println(file_id);
                     }
                 }
             }
@@ -128,7 +128,7 @@ public class TopkCommonWords {
             // If the word is a common word in both files
             if (sum_f1 > 0 && sum_f2 > 0) {
                 result = Math.min(sum_f1, sum_f2);
-                System.out.println(result);
+                //System.out.println(result);
                 WordFreq.add(new WordPair(key.toString(), result));
             }
 
