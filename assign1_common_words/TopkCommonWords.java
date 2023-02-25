@@ -94,8 +94,10 @@ public class TopkCommonWords {
                 // we only want words greater than 4
                 if (word.toString().length() > 4) {
                     // check whether the word is stopword
-                    if (isStopWord(word) == false) {
+                    if (!isStopWord(word)) {
                         context.write(word,new IntWritable(file_id));
+                        System.out.print(word);
+                        System.out.println(file_id);
                     }
                 }
             }
@@ -126,6 +128,7 @@ public class TopkCommonWords {
             // If the word is a common word in both files
             if (sum_f1 > 0 && sum_f2 > 0) {
                 result = Math.min(sum_f1, sum_f2);
+                System.out.println(result);
                 WordFreq.add(new WordPair(key.toString(), result));
             }
 
@@ -136,13 +139,15 @@ public class TopkCommonWords {
             // Sort the WordFreq in descending order
             // TreeSet<WordPair> sortedPairs = new TreeSet<>(WordFreq);
             int k = 0;
-            System.out.println(sortedPairs);
+            
 
             while (!WordFreq.isEmpty()) {
                 if (k == k_value) {
                     break;
                 }
                 WordPair currPair = WordFreq.pollLast();
+                System.out.print(currPair.freq);
+                System.out.println(currPair.word);
                 context.write(new IntWritable(currPair.freq), new Text(currPair.word));
                 k++;
             }
