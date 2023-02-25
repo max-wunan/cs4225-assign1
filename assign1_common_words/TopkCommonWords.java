@@ -163,15 +163,13 @@ public class TopkCommonWords {
                 }
             }
 
-            context.write(new IntWritable(sum_f1), key);
-
             // If the word is a common word in both files
-            // if (sum_f1 > 0 && sum_f2 > 0) {
-            //     int result = Math.min(sum_f1, sum_f2);
-            //     //System.out.println(result);
-            //     WordFreq.add(new WordPair(key.toString(), result));
-            //     context.write(new IntWritable(result), key);
-            // }
+            if (sum_f1 > 0 && sum_f2 > 0) {
+                int result = Math.min(sum_f1, sum_f2);
+                //System.out.println(result);
+                WordFreq.add(new WordPair(key.toString(), result));
+                context.write(new IntWritable(result), key);
+            }
 
         }
 
