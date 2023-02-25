@@ -215,7 +215,7 @@ public class TopkCommonWords {
             if (this.freq > wordpair.freq) {
                 return 1;
             } else if (this.freq == wordpair.freq) {
-                return this.word.compareTo(wordpair.word);
+                return (0 - this.word.compareTo(wordpair.word));
             } else {
                 return -1;
             }
